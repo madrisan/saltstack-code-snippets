@@ -43,6 +43,25 @@ def lastupdate():
 
     ts = rpm.TransactionSet()
     mi = ts.dbMatch()
-    latest = max(installptime(h) for h in mi)
+    last = max(installptime(h) for h in mi)
 
-    return time.asctime(latest)
+    return time.asctime(last)
+
+def buildtime():
+    '''
+    Return the build date and time
+
+    CLI Example:
+
+        .. code-block:: bash
+
+            salt '*' rpmpck.buildtime
+    '''
+    installdate = lambda h: h.sprintf("%{INSTALLTID:date}")
+    installptime = lambda h: time.strptime(installdate(h), "%c")
+
+    ts = rpm.TransactionSet()
+    mi = ts.dbMatch()
+    first = min(installptime(h) for h in mi)
+
+    return time.asctime(first)
