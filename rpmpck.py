@@ -49,7 +49,7 @@ def lastupdate():
 
 def buildtime():
     '''
-    Return the build date and time
+    Return the build date and time.
 
     CLI Example:
 
