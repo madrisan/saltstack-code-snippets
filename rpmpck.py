@@ -16,7 +16,7 @@ try:
 except ImportError:
     HAS_RPM_LIBS = False
 
-___virtualname__ = 'rpmpck'
+__virtualname__ = 'rpmpck'
 
 def __virtual__():
     if __grains__.get('os_family') == 'RedHat':
