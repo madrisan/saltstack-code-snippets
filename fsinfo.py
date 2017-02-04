@@ -6,8 +6,15 @@ Return some informations about the configured file systems.
 Copyright (C) 2017 Davide Madrisan <davide.madrisan.gmail.com>
 
 '''
+# Import python libs
+import collections
+import logging
+import os
 
+# Import salt libs
 import salt.utils
+
+log = logging.getLogger(__name__)
 
 __virtualname__ = 'fsinfo'
 
@@ -42,36 +49,41 @@ def usage():
         '/usr', '/usr/openv',
         '/var', '/var/cache', '/var/log' ]
 
-    filesystems_infos = __salt__['disk.usage']()
-    infos = {}
-    for fs in filesystems_infos:
-        try:
-            name = __salt__['disk.fstype'](fs)
-            device = filesystems_infos[fs].get('filesystem')
-            if not device.startswith('/dev/'):
-                continue
+    if not os.path.isfile('/etc/mtab'):
+        log.error('df cannot run without /etc/mtab')
+        return {}
+    if not os.path.isfile('/etc/fstab'):
+        log.error('file not found: /etc/fstab')
+        return {}
 
-            # example:
-            #  Filesystem Type 1024-blocks   Used Available Capacity Mounted on
-            #  /dev/vg/lv ext4     1998672 352472   1541344      19% /var
-            df_out = __salt__['cmd.run']('df -PTk {0}'.format(fs)).splitlines()
-            filesystem_infos = df_out[1].split()
-            fstype, size, used, available = \
-                list(filesystem_infos[i] for i in range(1,5))
-            infos[fs] = {
-                'available': _sizeof_fmt(int(available)),
-                'device': device,
-                'size': _sizeof_fmt(int(size)),
-                'type': fstype,
-                'used': _sizeof_fmt(int(used))
-            }
-            fs_class = 'system' if fs in fs_system else 'other'
-            infos[fs].update({ 'class': fs_class })
+    out = __salt__['cmd.run']('df -aPTk', python_shell=False).splitlines()
 
-            # check whether 'device' is configured for automount in fstab
-            automount = __salt__['file.grep']('/etc/fstab', '^%s\s' % device)
-            infos[fs].update({ 'automount': 'true' if automount else 'false' })
-        except:
-            continue
+    cols = ('filesystem', 'fstype', 'blocks', 'used',
+            'available', 'capacity', 'mountpoint')
+    # example:
+    #  Filesystem Type 1024-blocks   Used Available Capacity Mounted on
+    #  /dev/vg/lv ext4     1998672 352472   1541344      19% /var
+    #  ...
+    FileSystem = collections.namedtuple("Filesystem", cols)
 
-    return infos
+    header = lambda line: line.startswith('Filesystem')
+    dummy = lambda line: not line.startswith('/dev')
+    data = (FileSystem(*line.split()) for line in out
+        if not header(line) and not dummy(line))
+
+    def automount(device):
+        '''
+        Check whether 'device' is configured for automount in fstab
+        '''
+        return __salt__['file.grep']('/etc/fstab', '^%s\s' % device)
+
+    return dict(
+        (fs.filesystem, {
+            'automount': 'true' if automount(fs.filesystem) else 'false',
+            'available': _sizeof_fmt(int(fs.available)),
+            'class': 'system' if fs.mountpoint in fs_system else 'other',
+            'device': fs.filesystem,
+            'size': _sizeof_fmt(int(fs.blocks)),
+            'type': fs.fstype,
+            'used': _sizeof_fmt(int(fs.used))})
+        for fs in data)
