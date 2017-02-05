@@ -1,6 +1,6 @@
 ![](images/saltstack_horizontal_dark.png?raw=true)
 
-# SaltStack code snippets
+# SaltStack code snippets for Linux
 
 A set of code snippets that can be used to build SaltStack [execution modules][saltstackexec].
 
