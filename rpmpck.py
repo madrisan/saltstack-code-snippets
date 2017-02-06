@@ -28,6 +28,27 @@ def __virtual__():
         'The {0} module cannot be loaded: '
         'unsupported OS family'.format(__virtualname__))
 
+def list_pkgs():
+    '''
+    List the packages currently installed in a dict::
+
+        {'<package_name>': '<epoch>:<version>-<release>.<arch>'}
+
+    CLI Example:
+
+        .. code-block:: bash
+
+            salt '*' rpmpck.list_pkgs
+    '''
+    ts = rpm.TransactionSet()
+    mi = ts.dbMatch()
+    epoch = lambda h: "%s:" % h['epoch'] if h['epoch'] else ''
+    pkgs = dict([
+        (h['name'], "%s%s-%s.%s" % (
+            epoch(h), h['version'], h['release'], h['arch']))
+        for h in mi])
+    return pkgs
+
 def lastupdate():
     '''
     Return the date of the last rpm package update/installation.
