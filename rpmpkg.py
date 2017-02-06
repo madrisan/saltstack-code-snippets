@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 '''
 SaltStack code snippets
-Get the date of the last rpm package update/installation
+Get the date of the last rpm package update/installation and the list of packages
 
 Copyright (C) 2017 Davide Madrisan <davide.madrisan.gmail.com>
 
@@ -16,7 +16,7 @@ try:
 except ImportError:
     HAS_RPM_LIBS = False
 
-__virtualname__ = 'rpmpck'
+__virtualname__ = 'rpmpkg'
 
 def __virtual__():
     if __grains__.get('os_family') == 'RedHat':
@@ -38,7 +38,7 @@ def list_pkgs():
 
         .. code-block:: bash
 
-            salt '*' rpmpck.list_pkgs
+            salt '*' rpmpkg.list_pkgs
     '''
     ts = rpm.TransactionSet()
     mi = ts.dbMatch()
@@ -57,7 +57,7 @@ def lastupdate():
 
         .. code-block:: bash
 
-            salt '*' rpmpck.lastupdate
+            salt '*' rpmpkg.lastupdate
     '''
     installdate = lambda h: h.sprintf("%{INSTALLTID:date}")
     installptime = lambda h: time.strptime(installdate(h), "%c")
@@ -76,7 +76,7 @@ def buildtime():
 
         .. code-block:: bash
 
-            salt '*' rpmpck.buildtime
+            salt '*' rpmpkg.buildtime
     '''
     installdate = lambda h: h.sprintf("%{INSTALLTID:date}")
     installptime = lambda h: time.strptime(installdate(h), "%c")
