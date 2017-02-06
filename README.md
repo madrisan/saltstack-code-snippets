@@ -87,16 +87,35 @@ myserver:
 ```
 
 ### rpmpck
+  * __rpmpck.buildtime__ - Return the build date and time
+```bash
+myserver:
+    Fri Jan 27 23:18:03 2017
+```
+
   * __rpmpck.lastupdate__ - Return the date of the last rpm package update/installation
 ```bash
 myserver:
     Fri Feb  3 12:38:13 2017
 ```
 
-  * __rpmpck.buildtime__ - Return the build date and time
+  * __rpmpck.list_pkgs__ - List the packages currently installed in a dict
 ```bash
 myserver:
-    Fri Jan 27 23:18:03 2017
+    ----------
+    GeoIP:
+        1.5.0-11.el7.x86_64
+    NetworkManager:
+        1:1.4.0-13.el7_3.x86_64
+    NetworkManager-config-server:
+        1:1.4.0-13.el7_3.x86_64
+    ...
+ 
+    zip:
+        3.0-11.el7.x86_64
+    zlib:
+        1.2.7-17.el7.x86_64
+
 ```
 
 [saltstackexec]: https://docs.saltstack.com/en/latest/ref/modules/
