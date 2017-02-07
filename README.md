@@ -118,4 +118,21 @@ myserver:
 
 ```
 
+### swap
+
+  * __swap.usage__ - Return informations for swap filesystem
+
+```bash
+myserver:
+    ----------
+    /dev/mapper/rootvg-swaplv:
+        ----------
+        available:
+            2.0GB
+        size:
+            2.0GB
+        used:
+            0.0kB
+```
+
 [saltstackexec]: https://docs.saltstack.com/en/latest/ref/modules/
