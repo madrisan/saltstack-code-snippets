@@ -129,6 +129,8 @@ myserver:
         ----------
         available:
             2.0GB
+        priority:
+            -1
         size:
             2.0GB
         used:
