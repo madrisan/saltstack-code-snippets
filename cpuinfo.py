@@ -7,8 +7,12 @@ Copyright (C) 2017 Davide Madrisan <davide.madrisan.gmail.com>
 
 '''
 
+# Import 3rd-party libs
 import salt.utils
 import os
+
+# Import salt libs
+from salt.exceptions import CommandExecutionError
 
 __virtualname__ = 'cpuinfo'
 proc_cpuinfo = '/proc/cpuinfo'
@@ -18,7 +22,7 @@ def __virtual__():
         return True
     return False
 
-def proc():
+def proc(*args):
     '''
     Return the number of core, logical, and CPU sockets, by parsing
     the file /proc/cpuinfo.
@@ -28,6 +32,7 @@ def proc():
         .. code-block:: bash
 
             salt '*' cpuinfo.proc
+            salt '*' cpuinfo.proc logicals
     '''
     cpus, cpu_core_id, cpu_physical_id = 0, set(), set()
 
@@ -42,8 +47,19 @@ def proc():
         cores = len(cpu_core_id)
         sockets = len(cpu_physical_id)
 
-    return {
-        'cores': cores,
+    infos = {
+        'cores': cores, 
         'logicals': cpus,
         'sockets': sockets
     }
+
+    if not args:
+        return infos
+
+    try:
+        ret = dict((arg, infos[arg]) for arg in args)
+    except:
+        raise CommandExecutionError(
+            'Invalid flag passed to {0}.proc'.format(__virtualname__)
+        )
+    return ret
