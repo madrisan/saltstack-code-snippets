@@ -86,7 +86,7 @@ myserver:
     ...
 ```
 
-### rpmpck
+### rpmpck, rpmlibpkg
   * __rpmpck.buildtime__ - Return the build date and time
 ```bash
 myserver:

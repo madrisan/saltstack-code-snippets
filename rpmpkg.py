@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 '''
 SaltStack code snippets
-Get the date of the last rpm package update/installation and the list of packages
+Get the date of the last rpm package update/installation
+and the list of installed pacakges.
 
 Copyright (C) 2017 Davide Madrisan <davide.madrisan.gmail.com>
 
@@ -10,43 +11,40 @@ Copyright (C) 2017 Davide Madrisan <davide.madrisan.gmail.com>
 # Import python libs
 import time
 
-try:
-    import rpm
-    HAS_RPM_LIBS = True
-except ImportError:
-    HAS_RPM_LIBS = False
+# Import salt libs
+import salt.utils.itertools
 
 __virtualname__ = 'rpmpkg'
 
 def __virtual__():
-    if __grains__.get('os_family') == 'RedHat':
-        if not HAS_RPM_LIBS:
-            return (False, 'The rpm python lib cannot be loaded')
-        return __virtualname__
+    '''
+    Confine this execution module to rpm based systems
+    '''
+    if not salt.utils.which('rpm'):
+        return (False, 'The rpm binary is not in the path.')
+    return __virtualname__
 
-    return (False,
-        'The {0} module cannot be loaded: '
-        'unsupported OS family'.format(__virtualname__))
-
-def list_pkgs():
+def list_pkgs(*packages):
     '''
     List the packages currently installed in a dict::
 
         {'<package_name>': '<epoch>:<version>-<release>.<arch>'}
 
-    CLI Example:
-
-        .. code-block:: bash
-
-            salt '*' rpmpkg.list_pkgs
     '''
-    ts = rpm.TransactionSet()
-    mi = ts.dbMatch()
-    epoch = lambda h: "%s:" % h['epoch'] if h['epoch'] else ''
-    pkgs = dict([
-        (h['name'], "%s%s-%s.%s" % (
-            epoch(h), h['version'], h['release'], h['arch']))
-        for h in mi])
+    pkgs = {}
+    cmd = ['rpm', '-q' if packages else '-qa', '--queryformat',
+           r'%{NAME} %|EPOCH?{%{EPOCH}}:{0}|:%{VERSION}-%{RELEASE}.%{ARCH}\n']
+
+    if packages:
+        cmd.extend(packages)
+    out = __salt__['cmd.run'](cmd, output_loglevel='trace',
+                              python_shell=False)
+    for line in salt.utils.itertools.split(out, '\n'):
+        if 'is not installed' in line:
+            continue
+        comps = line.split()
+        pkgs[comps[0]] = comps[1]
+
     return pkgs
 
 def lastupdate():
@@ -57,14 +55,14 @@ def lastupdate():
 
         .. code-block:: bash
 
-            salt '*' rpmpkg.lastupdate
+            salt '*' rpmpck.lastupdate
     '''
-    installdate = lambda h: h.sprintf("%{INSTALLTID:date}")
-    installptime = lambda h: time.strptime(installdate(h), "%c")
+    installtime = lambda rpm_date: time.strptime(rpm_date, "%c")
 
-    ts = rpm.TransactionSet()
-    mi = ts.dbMatch()
-    last = max(installptime(h) for h in mi)
+    cmd = ['rpm', '-qa', '--queryformat', r'%{INSTALLTID:date}\n']
+    out = __salt__['cmd.run'](cmd, output_loglevel='trace',
+                              python_shell=False).splitlines()
+    last = max(installtime(rpm_date) for rpm_date in out)
 
     return time.asctime(last)
 
@@ -76,13 +74,14 @@ def buildtime():
 
         .. code-block:: bash
 
-            salt '*' rpmpkg.buildtime
+            salt '*' rpmpck.buildtime
     '''
-    installdate = lambda h: h.sprintf("%{INSTALLTID:date}")
-    installptime = lambda h: time.strptime(installdate(h), "%c")
+    installtime = lambda rpm_date: time.strptime(rpm_date, "%c")
 
-    ts = rpm.TransactionSet()
-    mi = ts.dbMatch()
-    first = min(installptime(h) for h in mi)
+    cmd = ['rpm', '-qa', '--queryformat', r'%{INSTALLTID:date}\n']
+    out = __salt__['cmd.run'](cmd, output_loglevel='trace',
+                              python_shell=False).splitlines()
+
+    first = min(installtime(rpm_date) for rpm_date in out)
 
     return time.asctime(first)
