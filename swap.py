@@ -20,11 +20,11 @@ swap_proc_file = '/proc/swaps'
 
 def __virtual__():
     '''
-    Confine this module to Linux systems with a mounted /proc file system
+    Make sure the /proc file system is mounted and provides /proc/swaps
     '''
     if not os.path.isfile(swap_proc_file):
-        return (False, 'The {0} file cannot be found.' % swap_proc_file)
-    return __virtualname__
+        return (False, 'The {0} file cannot be found.'.format(swap_proc_file))
+    return True
 
 def _sizeof_fmt(tok, factor=1024.0, skip=1, suffix='B'):
     '''

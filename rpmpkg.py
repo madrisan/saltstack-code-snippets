@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 '''
 SaltStack code snippets
-Get the date of the last rpm package update/installation
-and the list of installed pacakges.
+Module for querying informations from the rpm database.
 
 Copyright (C) 2017 Davide Madrisan <davide.madrisan.gmail.com>
 
@@ -22,7 +21,7 @@ def __virtual__():
     '''
     if not salt.utils.which('rpm'):
         return (False, 'The rpm binary is not in the path.')
-    return __virtualname__
+    return True
 
 def list_pkgs(*packages):
     '''

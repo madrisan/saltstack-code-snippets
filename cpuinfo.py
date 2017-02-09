@@ -1,26 +1,26 @@
 # -*- coding: utf-8 -*-
 '''
 SaltStack code snippets
-Provides an interface for querying information about the system CPUs
+Modulr for managing system CPUs
 
 Copyright (C) 2017 Davide Madrisan <davide.madrisan.gmail.com>
 
 '''
 
 # Import 3rd-party libs
-import salt.utils
 import os
 
 # Import salt libs
+import salt.utils
 from salt.exceptions import CommandExecutionError
 
 __virtualname__ = 'cpuinfo'
 proc_cpuinfo = '/proc/cpuinfo'
 
 def __virtual__():
-    if os.path.exists(proc_cpuinfo):
-        return True
-    return False
+    if not os.path.exists(proc_cpuinfo):
+        return (False, 'The {0} file cannot be found.'.format(proc_cpuinfo))
+    return True
 
 def proc(*args):
     '''
