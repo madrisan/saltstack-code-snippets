@@ -4,6 +4,27 @@
 
 A set of code snippets that can be used to build SaltStack [execution modules][saltstackexec].
 
+### account
+ * account.get_group_list - Return the list of local groups
+
+```bash
+myserver:
+    ----------
+    root:
+        ----------
+        gid:
+            0
+        secgroups:
+    ...
+    oinstall:
+        ----------
+        gid:
+            501
+        secgroups:
+            - oracle
+    ...
+```
+
 ### cpuinfo
  * __cpuinfo.proc__ - Return the number of core, logical, and CPU sockets
 
