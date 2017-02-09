@@ -5,8 +5,8 @@
 A set of code snippets that can be used to build SaltStack [execution modules][saltstackexec].
 
 ### account
- * account.get_group_list - Return the list of local groups
 
+  * account.get_group_list - Return the list of local groups
 ```bash
 myserver:
     ----------
@@ -25,9 +25,28 @@ myserver:
     ...
 ```
 
-### cpuinfo
- * __cpuinfo.proc__ - Return the number of core, logical, and CPU sockets
+  * __account.get_user_list__ - Return the list of local users
+```bash
+myserver:
+    ----------
+    bin:
+        ----------
+        gecos:
+            bin
+        gid:
+            1
+        homedir:
+            /bin
+        shell:
+            /sbin/nologin
+        uid:
+            1
+    ...
+```
 
+### cpuinfo
+
+  * __cpuinfo.proc__ - Return the number of core, logical, and CPU sockets
 ```bash
 myserver:
     ----------
@@ -40,6 +59,7 @@ myserver:
 ```
 
 ### fsinfo
+
   * __fsinfo.usage__ - Return some informations about the configured file systems
 ```bash
 myserver:
@@ -108,6 +128,7 @@ myserver:
 ```
 
 ### memory
+
   * __memory.usage__ - Return some informations on physical memory and swap
 ```bash
 myserver:
@@ -125,6 +146,7 @@ myserver:
 ```
 
 ### rpmpck, rpmlibpkg
+
   * __rpmpck.buildtime__ - Return the build date and time
 ```bash
 myserver:
@@ -159,7 +181,6 @@ myserver:
 ### swap
 
   * __swap.usage__ - Return informations for swap filesystem
-
 ```bash
 myserver:
     ----------
