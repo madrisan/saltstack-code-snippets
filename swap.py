@@ -60,6 +60,7 @@ def usage(human_readable=True):
     def swap_info(swap):
         return {
             'available': fmt(int(swap.size) - int(swap.used)),
+            'device': swap.filename,
             'priority': swap.priority,
             'size': fmt(swap.size),
             'used': fmt(swap.used)

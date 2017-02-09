@@ -150,6 +150,8 @@ myserver:
         ----------
         available:
             2.0GB
+        device:
+            /dev/dm-12
         priority:
             -1
         size:
