@@ -55,8 +55,6 @@ def usage(human_readable=True):
     '''
     cols = ('filename', 'swaptype', 'size', 'used', 'priority')
     Swap = collections.namedtuple('Swap', cols)
-    header = lambda line: line.startswith('Filename')
-
     fmt = lambda num: _sizeof_fmt(num) if human_readable else int(num)
 
     def swap_info(swap):
@@ -69,7 +67,7 @@ def usage(human_readable=True):
 
     blkid_out = __salt__['disk.blkid']()
     swap_devices = [dev for dev, details in blkid_out.items()
-                       if details['TYPE'] == 'swap']
+                       if details.get('TYPE', '') == 'swap']
 
     def _to_blkid(dev):
         # Try to map the dm device to the lvm one (in case of lvm
@@ -82,6 +80,8 @@ def usage(human_readable=True):
             except:
                 pass
         return dev
+
+    header = lambda line: line.startswith('Filename')
 
     with salt.utils.fopen(swap_proc_file, 'r') as fh_:
         data = (Swap(*line.split()) for line in fh_
