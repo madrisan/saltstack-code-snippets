@@ -107,6 +107,23 @@ myserver:
     ...
 ```
 
+### memory
+  * __memory.usage__ - Return some informations on physical memory and swap
+```bash
+myserver:
+    ----------
+    MemAvailable:
+         15 GB
+    MemFree:
+         11 GB
+    MemTotal:
+         15 GB
+    SwapFree:
+          2 GB
+    SwapTotal:
+          2 GB
+```
+
 ### rpmpck, rpmlibpkg
   * __rpmpck.buildtime__ - Return the build date and time
 ```bash
