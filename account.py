@@ -11,6 +11,7 @@ import collections
 
 # Import salt libs
 import salt.utils
+from salt.exceptions import CommandExecutionError
 
 __virtualname__ = 'account'
 
@@ -34,8 +35,13 @@ def get_group_list():
         return grouplist.split(',') if len(grouplist) > 0 else ''
 
     group_infos = []
-    with salt.utils.fopen(file_group, 'r') as fp_:
-        group_infos = [Group(*line.split(':')) for line in fp_]
+    try:
+        with salt.utils.fopen(file_group, 'r') as fp_:
+            group_infos = [Group(*line.split(':')) for line in fp_]
+    except:
+        raise CommandExecutionError(
+            'An error has occurred while reading {0}'.format(file_group)
+        )
     return dict(
         [(group.groupname, {
             'gid': group.gid,
@@ -58,8 +64,13 @@ def get_user_list():
     User = collections.namedtuple('User', toks)
 
     user_infos = []
-    with salt.utils.fopen(file_user, 'r') as fp_:
-        user_infos = [User(*line.split(':')) for line in fp_]
+    try:
+        with salt.utils.fopen(file_user, 'r') as fp_:
+            user_infos = [User(*line.split(':')) for line in fp_]
+    except:
+        raise CommandExecutionError(
+            'An error has occurred while reading {0}'.format(file_user)
+        )
     return dict(
         [(user.username, {
             'uid': user.uid,
