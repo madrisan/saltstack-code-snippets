@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
 '''
-SaltStack code snippets
-Modulr for managing system CPUs
-
+SaltStack code snippets.
+Module for managing system CPUs.
 Copyright (C) 2017 Davide Madrisan <davide.madrisan.gmail.com>
-
 '''
-
 # Import 3rd-party libs
 import os
 
@@ -14,7 +11,9 @@ import os
 import salt.utils
 from salt.exceptions import CommandExecutionError
 
+# Define the module's virtual name
 __virtualname__ = 'cpuinfo'
+
 proc_cpuinfo = '/proc/cpuinfo'
 
 def __virtual__():

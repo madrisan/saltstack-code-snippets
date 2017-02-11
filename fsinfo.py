@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 '''
-SaltStack code snippets
+SaltStack code snippets.
 Return some informations about the configured file systems.
-
 Copyright (C) 2017 Davide Madrisan <davide.madrisan.gmail.com>
-
 '''
 # Import python libs
 import collections
@@ -16,6 +14,7 @@ import salt.utils
 
 log = logging.getLogger(__name__)
 
+# Define the module's virtual name
 __virtualname__ = 'fsinfo'
 
 def _sizeof_fmt(tok, factor=1024.0, skip=1, suffix='B'):

@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 '''
-Module for managing users and groups
-
+SaltStack code snippets.
+Module for managing users and groups.
 Copyright (C) 2017 Davide Madrisan <davide.madrisan.gmail.com>
-
 '''
-
 # Import python libs
 import collections
 
@@ -13,6 +11,7 @@ import collections
 import salt.utils
 from salt.exceptions import CommandExecutionError
 
+# Define the module's virtual name
 __virtualname__ = 'account'
 
 def get_group_list():

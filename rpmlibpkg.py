@@ -1,13 +1,10 @@
 # -*- coding: utf-8 -*-
 '''
-SaltStack code snippets
+SaltStack code snippets.
 Module for querying informations from the rpm database.
 This module make use of the rpm python bindings.
-
 Copyright (C) 2017 Davide Madrisan <davide.madrisan.gmail.com>
-
 '''
-
 # Import python libs
 import time
 
@@ -17,6 +14,7 @@ try:
 except ImportError:
     HAS_RPM_LIBS = False
 
+# Define the module's virtual name
 __virtualname__ = 'rpmlibpkg'
 
 def __virtual__():

@@ -1,17 +1,20 @@
 # -*- coding: utf-8 -*-
 '''
-Module for managing IANA services (/etc/services)
+SaltStack code snippets.
+Module for managing IANA services (/etc/services).
 Copyright (C) 2017 Davide Madrisan <davide.madrisan.gmail.com>
-
 '''
 # Import python libs
 import collections
 import os
+
 # Import salt libs
 import salt.utils
 from salt.exceptions import CommandExecutionError
 
+# Define the module's virtual name
 __virtualname__ = 'service_iana'
+
 file_services = '/etc/services'
 
 def __virtual__():

@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 '''
-SaltStack code snippets
+SaltStack code snippets.
 Return informations for swap filesystem
-
 Copyright (C) 2017 Davide Madrisan <davide.madrisan.gmail.com>
 '''
-
 # Import python libs
 import collections
 import os
@@ -70,9 +68,11 @@ def usage(human_readable=True):
     swap_devices = [dev for dev, details in blkid_out.items()
                        if details.get('TYPE', '') == 'swap']
 
-    def _to_blkid(dev):
-        # Try to map the dm device to the lvm one (in case of lvm
-        # partitioning).  Ex: /dev/dm-1 --> /dev/mapper/rootvg-swaplv
+    def to_blkid(dev):
+        '''
+        This function Try to map the dm device to the lvm one (in case of lvm
+        partitioning).  Ex: /dev/dm-1 --> /dev/mapper/rootvg-swaplv
+        '''
         for blkdev in swap_devices:
             try:
                 rl =__salt__['file.readlink'](blkdev, canonicalize=True)
@@ -87,5 +87,5 @@ def usage(human_readable=True):
     with salt.utils.fopen(swap_proc_file, 'r') as fh_:
         data = (Swap(*line.split()) for line in fh_
             if not header(line))
-        return dict((_to_blkid(swap.filename), swap_info(swap)) for swap in data
+        return dict((to_blkid(swap.filename), swap_info(swap)) for swap in data
             if swap.swaptype == 'partition')   # ignore swap files

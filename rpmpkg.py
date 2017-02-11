@@ -1,18 +1,16 @@
 # -*- coding: utf-8 -*-
 '''
-SaltStack code snippets
+SaltStack code snippets.
 Module for querying informations from the rpm database.
-
 Copyright (C) 2017 Davide Madrisan <davide.madrisan.gmail.com>
-
 '''
-
 # Import python libs
 import time
 
 # Import salt libs
 import salt.utils.itertools
 
+# Define the module's virtual name
 __virtualname__ = 'rpmpkg'
 
 def __virtual__():

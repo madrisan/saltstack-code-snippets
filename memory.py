@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 '''
-SaltStack code snippets
-This module is a simple wrapper to status.meminfo
-
+SaltStack code snippets.
+This module is a simple wrapper to status.meminfo.
 Copyright (C) 2017 Davide Madrisan <davide.madrisan.gmail.com>
 '''
-
 # Define the module's virtual name
 __virtualname__ = 'memory'
 
