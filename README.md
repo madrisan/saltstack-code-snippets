@@ -178,6 +178,31 @@ myserver:
 
 ```
 
+### service_iana
+
+  * __get_service_list__ - Return a dictionary of services recorded in /etc/services
+```bash
+myserver:
+    ----------
+    1/ddp:
+        ----------
+        name:
+            rtmp
+        port:
+            1
+        protocol:
+            ddp
+    1/tcp:
+        ----------
+        name:
+            tcpmux
+        port:
+            1
+        protocol:
+            tcp
+    ...
+```
+
 ### swap
 
   * __swap.usage__ - Return informations for swap filesystem
