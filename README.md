@@ -4,9 +4,13 @@
 
 A set of code snippets that can be used to build SaltStack [execution modules][saltstackexec].
 
-### account
+A Salt execution module is a Python or Cython module placed in a directory called `_modules/` at the root of the Salt fileserver, usually `/srv/salt`.
 
-  * account.get_group_list - Return the list of local groups
+The [scripts](scripts/) folder contains Python sample scripts that make use of SaltStack as a backend.
+
+### [account](account.py) 
+
+  * __account.get_group_list__ - Return the list of local groups
 ```bash
 myserver:
     ----------
@@ -44,7 +48,7 @@ myserver:
     ...
 ```
 
-### cpuinfo
+### [cpuinfo](cpuinfo.py)
 
   * __cpuinfo.proc__ - Return the number of core, logical, and CPU sockets
 ```bash
@@ -58,7 +62,7 @@ myserver:
         2
 ```
 
-### fsinfo
+### [fsinfo](fsinfo.py)
 
   * __fsinfo.usage__ - Return some informations about the configured file systems
 ```bash
@@ -127,7 +131,7 @@ myserver:
     ...
 ```
 
-### memory
+### [memory](memory.py)
 
   * __memory.usage__ - Return some informations on physical memory and swap
 ```bash
@@ -145,21 +149,21 @@ myserver:
           2 GB
 ```
 
-### rpmpck, rpmlibpkg
+### [rpmpkg](rpmpkg.py), [rpmlibpkg](rpmlibpkg.py)
 
-  * __rpmpck.buildtime__ - Return the build date and time
+  * __rpmpkg.buildtime__ - Return the build date and time
 ```bash
 myserver:
     Fri Jan 27 23:18:03 2017
 ```
 
-  * __rpmpck.lastupdate__ - Return the date of the last rpm package update/installation
+  * __rpmpkg.lastupdate__ - Return the date of the last rpm package update/installation
 ```bash
 myserver:
     Fri Feb  3 12:38:13 2017
 ```
 
-  * __rpmpck.list_pkgs__ - List the packages currently installed in a dict
+  * __rpmpkg.list_pkgs__ - List the packages currently installed in a dict
 ```bash
 myserver:
     ----------
@@ -178,7 +182,7 @@ myserver:
 
 ```
 
-### service_iana
+### [service_iana](service_iana.py)
 
   * __get_service_list__ - Return a dictionary of services recorded in /etc/services
 ```bash
@@ -203,7 +207,7 @@ myserver:
     ...
 ```
 
-### swap
+### [swap](swap.py)
 
   * __swap.usage__ - Return informations for swap filesystem
 ```bash
