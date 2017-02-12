@@ -76,38 +76,20 @@ myserver:
             true
         available:
             1.8GB
-        class:
-            system
         device:
             /dev/mapper/rootvg-rootlv
+        fstype:
+            ext4
+        lvm-pvdevice:
+            /dev/mapper/mpatha2
+        lvm-vgname:
+            rootvg
+        mountpoint:
+            /
         scope:
             Unknown
         size:
             1.9GB
-        type:
-            ext4
-        used:
-            40.3MB
-    /boot:
-        ----------
-        autofs:
-            false
-        automount:
-            true
-        available:
-            184.2MB
-        class:
-            system
-        device:
-            /dev/mapper/mpatha1
-        scope:
-            Unknown
-        size:
-            379.4MB
-        type:
-            ext4
-        used:
-            171.1MB
     /sharednfs:
         ----------
         autofs:
@@ -116,16 +98,14 @@ myserver:
             true
         available:
             477.1GB
-        class:
-            other
         device:
-            nas.domain.local:/PARTNFS/sharedfolder
-        scope:
-            lan
+            nas.domain.eu:/PARTNFS/sharedfolder
+        fstype:
+            nfs
+        mountpoint:
+            /sharednfs
         size:
             2.0TB
-        type:
-            nfs
         used:
             1.5TB
     ...
