@@ -33,7 +33,7 @@ def _sizeof_fmt(tok, factor=1024.0, skip=1, suffix='B'):
         num /= factor
     return "%.1f%s%s" % (num, 'p', suffix)
 
-def usage():
+def usage(human_readable=True):
     '''
     Return informations about the existing filesystems
 
@@ -42,23 +42,13 @@ def usage():
             salt '*' fsinfo.usage
 
     '''
-    fs_system = [
-        '/',
-        '/boot',
-        '/home',
-        '/images',
-        '/opt', '/opt/bladelogic',
-        '/root',
-        '/tmp',
-        '/usr', '/usr/openv',
-        '/var', '/var/cache', '/var/log' ]
-
     # we will ignore all the filesystem with a fstype not in this list
     fs_check_types = [
         'autofs',
         'ext2', 'ext3', 'ext4',
         'nfs', 'nfs4',
         'xfs' ]
+    fs_networkfs = ['nfs', 'nfs4']  # FIXME: cifs fs unsupported
 
     if not os.path.isfile('/etc/mtab'):
         log.error('df cannot run without /etc/mtab')
@@ -85,22 +75,24 @@ def usage():
     data = (FileSystem(*line.split()) for line in out
         if not header(line) and not error(line))
     bool2str = lambda b: 'true' if b else 'false'
-    fsclass = lambda fs: 'system' if fs.mountpoint in fs_system else 'other'
+    fsscope = lambda fs: 'lan' if fs.fstype in fs_networkfs else 'Unknown' # FIXME
 
     def automount(device):
         '''Check whether 'device' is configured for automount in fstab'''
         return __salt__['file.grep']('/etc/fstab', '^%s\s' % device)
 
+    fmt = lambda num: _sizeof_fmt(num) if human_readable else int(num)
     def fsinfos(fs):
         '''Return a dictionary containing the filesystem informations'''
         return {
             'autofs': bool2str(fs.fstype == 'autofs'),
             'automount': 'true' if automount(fs.filesystem) else 'false',
-            'available': _sizeof_fmt(fs.available),
-            'class': fsclass(fs),
+            'available': fmt(fs.available),
             'device': fs.filesystem,
-            'size': _sizeof_fmt(fs.blocks),
-            'type': fs.fstype,
-            'used': _sizeof_fmt(fs.used)}
+            'fstype': fs.fstype,
+            'mountpoint': fs.mountpoint,
+            'scope': fsscope(fs),
+            'size': fmt(fs.blocks),
+            'used': fmt(fs.used)}
 
     return dict((fs.mountpoint, fsinfos(fs)) for fs in data)
