@@ -5,6 +5,7 @@ Return some informations about the configured file systems.
 Copyright (C) 2017 Davide Madrisan <davide.madrisan.gmail.com>
 '''
 # Import python libs
+from __future__ import division
 import collections
 import logging
 import os
@@ -41,17 +42,24 @@ def _get_multipath_names():
         return None
     return out
 
-def _get_vgname(device):
+def _get_lvm_infos(device):
     vgname = {}
     try:
         lvdisplay = __salt__['lvm.lvdisplay'](device)
         if lvdisplay:
             data = lvdisplay.get(*lvdisplay.keys())
-            vgname = data.get('Volume Group Name', '')
+            vgname = data.get('Volume Group Name')
+            # NOTE: according to 
+            # https://bugzilla.redhat.com/show_bug.cgi?id=190730
+            # the output is in 512byte sectors.
+            lvsize = data.get('Logical Volume Size') 
+            return {
+                'vgname': vgname,
+                'lvsize': int(lvsize) // 2
+            }
     except:
-        log.warning('Error while parsing lvm info for {0}'.format(
-            fs.filesystem))
-    return vgname
+        log.warning('Error while parsing lvm info for {0}'.format(device))
+    return {}
 
 def _get_physical_volume_device(vgname):
     out = __salt__['lvm.pvdisplay']()
@@ -118,7 +126,11 @@ def usage(human_readable=True):
             'size': fmt(fs.blocks),
             'used': fmt(fs.used)
         }
-        vgname = _get_vgname(fs.filesystem)
+        lvm_infos = _get_lvm_infos(fs.filesystem)
+        lvsize = lvm_infos.get('lvsize', None)
+        vgname = lvm_infos.get('vgname', None)
+        if lvsize:
+            infos['lvm-lvsize'] = fmt(lvsize)
         if vgname:
             infos['lvm-vgname'] = vgname
             physical_volume_device = _get_physical_volume_device(vgname)
