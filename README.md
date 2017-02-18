@@ -111,6 +111,70 @@ myserver:
     ...
 ```
 
+### [linux_fiberchannel](linux_fiberchannel.py)
+
+  * linux_fiberchannel.show - View system fiber channel device information
+```bash
+myserver:
+    host11:
+        ----------
+        Class:
+            fc_host
+        Class Device:
+            host11
+        Class Device path:
+            /sys/devices/virtual/net/em1.550/ctlr_0/host11/fc_host/host11
+        Device:
+            host11
+        Device path:
+            /sys/devices/virtual/net/em1.550/ctlr_0/host11
+        active_fc4s:
+            0x00 0x00 0x01 0x00 0x00 0x00 0x00 0x01 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+        dev_loss_tmo:
+            60
+        fabric_name:
+            0x2226000573d92e21
+        issue_lip:
+            <store method only>
+        max_npiv_vports:
+            65535
+        maxframe_size:
+            2048 bytes
+        node_name:
+            0x200028f10e702370
+        npiv_vports_inuse:
+            0
+        port_id:
+            0x6a0801
+        port_name:
+            0x200128f10e702370
+        port_state:
+            Online
+        port_type:
+            NPort (fabric via point-to-point)
+        speed:
+            10 Gbit
+        supported_classes:
+            Class 3
+        supported_fc4s:
+            0x00 0x00 0x01 0x00 0x00 0x00 0x00 0x01 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+        supported_speeds:
+            1 Gbit, 10 Gbit
+        symbolic_name:
+            bnx2fc (QLogic BCM57810) v2.10.3 over em1.550
+        tgtid_bind_type:
+            wwpn (World Wide Port Name)
+        uevent:
+            DEVTYPE=scsi_host
+        vport_create:
+            <store method only>
+        vport_delete:
+            <store method only>
+    host12:
+        ----------
+        ...
+```
+
 ### [memory](memory.py)
 
   * __memory.usage__ - Return some informations on physical memory and swap
