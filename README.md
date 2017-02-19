@@ -110,6 +110,69 @@ myserver:
             1.5TB
     ...
 ```
+### [linux_bonding](linux_bonding.py)
+
+  * __linux_bonding.device_list__ - Return the list of the bonding device
+```bash
+myserver:
+    ----------
+    - bond0
+```
+
+  * __linux_bonding.topology__ - Return the topology of the network bonding
+```bash
+myserver:
+    ----------
+    bond0:
+        ----------
+        bonding_mode:
+            fault-tolerance (active-backup)
+        currently_active_slave:
+            em1
+        down_delay_(ms):
+            100
+        em1:
+            ----------
+            duplex:
+                full
+            link_failure_count:
+                0
+            mii_status:
+                up
+            permanent_hw_addr:
+                28:f1:0e:70:23:6e
+            slave_queue_id:
+                0
+            speed:
+                10000 Mbps
+        em2:
+            ----------
+            duplex:
+                full
+            link_failure_count:
+                0
+            mii_status:
+                up
+            permanent_hw_addr:
+                28:f1:0e:70:23:71
+            slave_queue_id:
+                0
+            speed:
+                10000 Mbps
+        ethernet_channel_bonding_driver:
+            v3.7.1 (April 27, 2011)
+        mii_polling_interval_(ms):
+            100
+        mii_status:
+            up
+        primary_slave:
+            None
+        slave_interfaces:
+            - em1
+            - em2
+        up_delay_(ms):
+            0
+```
 
 ### [linux_fiberchannel](linux_fiberchannel.py)
 
