@@ -65,7 +65,7 @@ def get_user_list():
     user_infos = []
     try:
         with salt.utils.fopen(file_user, 'r') as fp_:
-            user_infos = [User(*line.split(':')) for line in fp_]
+            user_infos = [User(*line.rstrip().split(':')) for line in fp_]
     except:
         raise CommandExecutionError(
             'An error has occurred while reading {0}'.format(file_user)
