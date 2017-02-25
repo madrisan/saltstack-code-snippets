@@ -5,7 +5,7 @@ Module for managing users and groups.
 Copyright (C) 2017 Davide Madrisan <davide.madrisan.gmail.com>
 '''
 # Import python libs
-import collections
+from collections import namedtuple 
 
 # Import salt libs
 import salt.utils
@@ -23,17 +23,15 @@ def get_group_list():
         .. code-block:: bash
 
             salt '*' account.get_group_list
-
     '''
     file_group = '/etc/group'
-    toks = ('groupname', 'passwd', 'gid', 'grouplist')
-    Group = collections.namedtuple('Group', toks)
+    tokens = ('groupname', 'passwd', 'gid', 'grouplist')
+    Group = namedtuple('Group', tokens)
 
-    def secgroups(group):
+    def _secondary_groups(group):
         grouplist = group.grouplist.strip()
         return grouplist.split(',') if len(grouplist) > 0 else ''
 
-    group_infos = []
     try:
         with salt.utils.fopen(file_group, 'r') as fp_:
             group_infos = [Group(*line.split(':')) for line in fp_]
@@ -41,11 +39,14 @@ def get_group_list():
         raise CommandExecutionError(
             'An error has occurred while reading {0}'.format(file_group)
         )
-    return dict(
-        [(group.groupname, {
-            'gid': group.gid,
-            'grouplist': secgroups(group)
-        }) for group in group_infos])
+
+    return dict((
+        group.groupname, {
+            'gid': int(group.gid),
+            'grouplist': _secondary_groups(group)
+        }) if _secondary_groups(group) else (
+            group.groupname, {'gid': int(group.gid)})
+        for group in group_infos)
 
 def get_user_list():
     '''
@@ -56,11 +57,10 @@ def get_user_list():
         .. code-block:: bash
 
             salt '*' account.get_user_list
-
     '''
     file_user = '/etc/passwd'
-    toks = ('username', 'passwd', 'uid', 'gid', 'gecos', 'homedir', 'shell')
-    User = collections.namedtuple('User', toks)
+    tokens = ('username', 'passwd', 'uid', 'gid', 'gecos', 'homedir', 'shell')
+    User = namedtuple('User', tokens)
 
     user_infos = []
     try:
@@ -71,10 +71,10 @@ def get_user_list():
             'An error has occurred while reading {0}'.format(file_user)
         )
     return dict(
-        [(user.username, {
-            'uid': user.uid,
-            'gid': user.gid,
+        (user.username, {
+            'uid': int(user.uid),
+            'gid': int(user.gid),
             'gecos': user.gecos,
             'homedir': user.homedir,
             'shell': user.shell
-        }) for user in user_infos])
+        }) for user in user_infos)

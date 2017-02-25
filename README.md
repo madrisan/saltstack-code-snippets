@@ -18,7 +18,6 @@ myserver:
         ----------
         gid:
             0
-        secgroups:
     ...
     oinstall:
         ----------
