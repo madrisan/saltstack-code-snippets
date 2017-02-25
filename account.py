@@ -62,7 +62,6 @@ def get_user_list():
     tokens = ('username', 'passwd', 'uid', 'gid', 'gecos', 'homedir', 'shell')
     User = namedtuple('User', tokens)
 
-    user_infos = []
     try:
         with salt.utils.fopen(file_user, 'r') as fp_:
             user_infos = [User(*line.rstrip().split(':')) for line in fp_]
@@ -70,8 +69,8 @@ def get_user_list():
         raise CommandExecutionError(
             'An error has occurred while reading {0}'.format(file_user)
         )
-    return dict(
-        (user.username, {
+    return dict((
+        user.username, {
             'uid': int(user.uid),
             'gid': int(user.gid),
             'gecos': user.gecos,
