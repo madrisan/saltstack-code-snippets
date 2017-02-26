@@ -255,6 +255,19 @@ myserver:
           2 GB
 ```
 
+### [pacemaker](pacemaker.py)
+
+  * __cluster_local_node__
+  * __cluster_local_node_status__
+  * __cluster_name__
+  * __cluster_nodes__
+  * __cluster_nodes_status__
+  * __cluster_resource_group_list__
+  * __cluster_resources__
+  * __cluster_service_status__
+  * __cluster_stonith_configured__
+  * __is_cluster_member__
+
 ### [rpmpkg](rpmpkg.py), [rpmlibpkg](rpmlibpkg.py)
 
   * __rpmpkg.buildtime__ - Return the build date and time
