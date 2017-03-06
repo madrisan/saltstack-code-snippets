@@ -47,6 +47,15 @@ myserver:
     ...
 ```
 
+ * get_passwd_raw - Return the raw content of the file /etc/passwd
+```bash
+myserver:
+    - root:x:0:0:root:/root:/bin/bash
+    - bin:x:1:1:bin:/bin:/sbin/nologin
+    - daemon:x:2:2:daemon:/sbin:/sbin/nologin
+    ...
+```
+
 ### [cpuinfo](cpuinfo.py)
 
   * __cpuinfo.proc__ - Return the number of core, logical, and CPU sockets

@@ -74,3 +74,23 @@ def get_user_list():
             homedir = user.homedir,
             shell = user.shell)
     return dict((user.username, _pack_data(user)) for user in user_infos)
+
+def get_passwd_raw():
+    '''
+    Return the raw content of the file /etc/passwd
+
+    CLI Example:
+
+        .. code-block:: bash
+
+            salt '*' account.get_passwd_raw
+    '''
+    file_user = '/etc/passwd'
+    try:
+        with salt.utils.fopen(file_user, 'r') as fp_:
+            content = [line for line in fp_]
+    except:
+        raise CommandExecutionError(
+            'An error has occurred while reading {0}'.format(file_user)
+        )
+    return content
