@@ -13,13 +13,8 @@ __status__ = "Beta"
 
 # Import python libs
 import getopt
-import itertools
 import os
 import sys
-try:
-    import json
-except ImportError:
-    import simplejson as json
 from collections import namedtuple
 
 # Import salt libs

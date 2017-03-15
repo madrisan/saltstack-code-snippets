@@ -9,9 +9,6 @@ Copyright (C) 2017 Davide Madrisan <davide.madrisan.gmail.com>
 # Import python libs
 from os.path import basename as basename
 
-# Import salt libs
-import salt.utils
-
 __virtualname__ = 'cluster'
 
 def __virtual__():

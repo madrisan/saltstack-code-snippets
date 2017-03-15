@@ -7,10 +7,7 @@ Copyright (C) 2017 Davide Madrisan <davide.madrisan.gmail.com>
 # Import python libs
 from xml.dom.minidom import parseString
 try:
-    from pcs import (
-        resource,
-        utils,
-    )
+    from pcs import utils
     from pcs.lib import pacemaker as lib_pacemaker
     HAS_PCS_LIBS = True
 except ImportError:
