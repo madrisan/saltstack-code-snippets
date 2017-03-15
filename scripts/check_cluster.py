@@ -143,7 +143,7 @@ if __name__ == '__main__':
         elif o in ('-c', '--cluster'):
             cluster_hostnames = a.strip().split(',')
         else:
-            assert False, 'unhandled option'
+            die('Unhandled command line option: {0}'.format(o))
 
     if not cluster_hostnames: usage(); sys.exit(2)
     if os.geteuid() != 0:

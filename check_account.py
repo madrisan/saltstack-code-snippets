@@ -153,7 +153,7 @@ if __name__ == '__main__':
         elif o in ('-u', '--user'):
             users = a.strip().split(',')
         else:
-            assert False, 'unhandled option'
+            die('Unhandled command line option: {0}'.format(o))
 
     if not users or len(args) != 1: usage(); sys.exit(2)
     if os.geteuid() != 0:
