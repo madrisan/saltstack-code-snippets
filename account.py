@@ -5,7 +5,7 @@ Module for managing users and groups.
 Copyright (C) 2017 Davide Madrisan <davide.madrisan.gmail.com>
 '''
 # Import python libs
-from collections import namedtuple 
+from collections import namedtuple
 
 # Import salt libs
 import salt.utils

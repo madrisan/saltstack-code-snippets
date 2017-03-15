@@ -27,7 +27,7 @@ def _lscpu():
     '''
     Get available CPU information.
     '''
-    try: 
+    try:
         out = __salt__['cmd.run_all']("lscpu")
     except:
         return None

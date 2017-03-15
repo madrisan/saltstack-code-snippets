@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# Check for system configuration issues on a Red Hat cluster 
+# Check for system configuration issues on a Red Hat cluster
 # Copyright (C) 2017 Davide Madrisan <davide.madrisan.gmail.com>
 
 from __future__ import print_function

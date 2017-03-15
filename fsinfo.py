@@ -49,10 +49,10 @@ def _get_lvm_infos(device):
         if lvdisplay:
             data = lvdisplay.get(*lvdisplay.keys())
             vgname = data.get('Volume Group Name')
-            # NOTE: according to 
+            # NOTE: according to
             # https://bugzilla.redhat.com/show_bug.cgi?id=190730
             # the output is in 512byte sectors.
-            lvsize = data.get('Logical Volume Size') 
+            lvsize = data.get('Logical Volume Size')
             return {
                 'vgname': vgname,
                 'lvsize': int(lvsize) // 2

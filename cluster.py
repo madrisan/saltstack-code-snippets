@@ -42,7 +42,7 @@ def is_active():
 
     rh_cluster_suite = lambda procs: 'clurgmgrd' in procs
     pacemaker_cluster = lambda procs: 'pacemakerd' in procs
-    
+
     if rh_cluster_suite(procs_cmds):
         return (True, 'Red Hat Cluster Suite')
     elif pacemaker_cluster (procs_cmds):
