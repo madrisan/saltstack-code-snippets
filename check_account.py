@@ -64,7 +64,6 @@ def get_users_infos(ssh_client, target, users):
     all_groups = saltstack_module_run(
         ssh_client, target, 'account.get_group_list')
     group_names = all_groups.keys()
-    printable_lst = lambda lst: ','.join(lst)
 
     def _pack_data(user):
         data = saltstack_module_run(
@@ -77,10 +76,10 @@ def get_users_infos(ssh_client, target, users):
         secgroups = [grp for grp in data['groups'] if grp not in groups]
 
         return dict(
-            group = printable_lst(groups),
+            group = ','.join(groups),
             shell = data['shell'],
             home = data['home'],
-            secgroups = printable_lst(secgroups),
+            secgroups = ','.join(secgroups),
         )
 
     return dict((user, _pack_data(user)) for user in users)
