@@ -1,3 +1,6 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1349b544665f49ac82e552160ffd8dab)](https://www.codacy.com/app/madrisan/saltstack-code-snippets?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=madrisan/saltstack-code-snippets&amp;utm_campaign=Badge_Grade)
+[![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://spdx.org/licenses/Apache-2.0.html)
+
 ![](images/saltstack_horizontal_dark.png?raw=true)
 
 # SaltStack code snippets for Linux
